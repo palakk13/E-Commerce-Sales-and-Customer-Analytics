@@ -1,0 +1,138 @@
+# ==============================================================================
+# End-to-End E-Commerce Data Engineering & Analytics Platform - .gitignore
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Python & Bytecode
+# ------------------------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments
+venv/
+.venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ------------------------------------------------------------------------------
+# Environment Variables & Secrets (Keep .env.example)
+# ------------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+*.pfx
+id_rsa
+id_ecdsa
+
+# Explicitly ensure templates are tracked
+!.env.example
+!docker-compose.yml
+
+# ------------------------------------------------------------------------------
+# IDEs & Operating Systems (Windows, macOS, Linux)
+# ------------------------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.AppleDouble
+.LSOverride
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+desktop.ini
+
+# ------------------------------------------------------------------------------
+# Project Scratch & Ad-Hoc Scripts
+# ------------------------------------------------------------------------------
+scratch/
+
+# ------------------------------------------------------------------------------
+# Logging & Runtime Metrics (Keep folder structure via .gitkeep)
+# ------------------------------------------------------------------------------
+logs/*.log
+logs/*.json
+!logs/.gitkeep
+
+# ------------------------------------------------------------------------------
+# Database Warehouse & Local Storage
+# ------------------------------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+data/warehouse/*.db
+data/warehouse/*.sqlite
+data/warehouse/*.sqlite3
+!data/warehouse/.gitkeep
+
+# ------------------------------------------------------------------------------
+# Data Directory Management
+# ------------------------------------------------------------------------------
+# Keep benchmark raw datasets for out-of-the-box reproducibility
+!data/raw/*.csv
+!data/raw/.gitkeep
+
+# Ignore generated pipeline outputs and quarantine datasets
+data/processed/*
+!data/processed/.gitkeep
+!data/processed/analytics/
+data/processed/analytics/*
+!data/processed/analytics/.gitkeep
+data/rejected/*
+!data/rejected/.gitkeep
+
+# Ignore Power BI intermediate data extracts (re-generated via src/analytics/generate_powerbi_assets.py)
+data/powerbi/*
+!data/powerbi/.gitkeep
+
+# ------------------------------------------------------------------------------
+# Apache Spark & Hadoop Runtimes
+# ------------------------------------------------------------------------------
+metastore_db/
+derby.log
+checkpoint/
+.spark-staging/
+spark-warehouse/
+
+# ------------------------------------------------------------------------------
+# Testing & Code Coverage
+# ------------------------------------------------------------------------------
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# ------------------------------------------------------------------------------
+# Apache Airflow Runtimes
+# ------------------------------------------------------------------------------
+airflow/airflow.cfg
+airflow/airflow.db
+airflow/logs/
+airflow/webserver_config.py

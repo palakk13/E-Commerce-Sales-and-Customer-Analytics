@@ -1,0 +1,31 @@
+product_id,product_name,category,sub_category,unit_cost,list_price
+PROD_0001,Noise-Cancelling Headphones,Electronics,Noise-Cancelling,45.00,99.99
+PROD_0002,Wireless Mechanical Keyboard,Electronics,Wireless,35.00,79.99
+PROD_0003,Ergonomic Gaming Mouse,Electronics,Ergonomic,18.00,44.99
+PROD_0004,Ultra-HD 27-inch Monitor,Electronics,Ultra-HD,140.00,279.99
+PROD_0005,Fast Wireless Charger,Electronics,Fast,9.00,24.99
+PROD_0006,Smart Fitness Watch,Electronics,Smart,55.00,129.99
+PROD_0007,Bluetooth Portable Speaker,Electronics,Bluetooth,22.00,49.99
+PROD_0008,USB-C Multiport Dock,Electronics,USB-C,28.00,59.99
+PROD_0009,Organic Cotton T-Shirt,apparel,Organic,6.00,19.99
+PROD_0010,Slim-Fit Stretch Jeans,Apparel,Slim-Fit,18.00,49.99
+PROD_0011,Waterproof Trail Jacket,Apparel,Waterproof,40.00,99.99
+PROD_0012,Merino Wool Sweater,Apparel,Merino,32.00,79.99
+PROD_0013,Athletic Running Shorts,Apparel,Athletic,10.00,29.99
+PROD_0014,Breathable Crew Socks (3-Pack),Apparel,Breathable,3.50,12.99
+PROD_0015,Pour-Over Coffee Maker,Home & Kitchen,Pour-Over,12.00,34.99
+PROD_0016,Non-Stick Cast Iron Skillet,Home & Kitchen,Non-Stick,20.00,49.99
+PROD_0017,Stainless Steel Chef Knife 8-in,Home & Kitchen,Stainless,15.00,39.99
+PROD_0018,Ceramic Dinner Plate Set,Home & Kitchen,Ceramic,25.00,59.99
+PROD_0019,Electric Milk Frother,Home & Kitchen,Electric,8.00,21.99
+PROD_0020,Air Purifier HEPA Filter,Home & Kitchen,Air,50.00,119.99
+PROD_0021,High-Density Yoga Mat,Sports & Outdoors,High-Density,11.00,29.99
+PROD_0022,Insulated Stainless Water Bottle,Sports & Outdoors,Insulated,7.00,22.99
+PROD_0023,Adjustable Dumbbell Set (Pair),Sports & Outdoors,Adjustable,60.00,149.99
+PROD_0024,Camping Dome Tent (2-Person),Sports & Outdoors,Camping,45.00,109.99
+PROD_0025,LED Rechargeable Headlamp,Sports & Outdoors,LED,8.50,24.99
+PROD_0026,Data Engineering with Python,Books & Media,Data,14.00,39.99
+PROD_0027,Designing Data-Intensive Applications,Books & Media,Designing,16.00,45.00
+PROD_0028,Machine Learning Yearning,Books & Media,Machine,12.00,32.50
+PROD_0029,Clean Architecture Handbook,Books & Media,Clean,15.00,42.00
+PROD_0030,The Lean Startup Playbook,Books & Media,The,9.00,24.99

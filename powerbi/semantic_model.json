@@ -1,0 +1,170 @@
+{
+  "model_name": "EcommerceAnalyticsSemanticModel",
+  "version": "1.0.0",
+  "description": "Enterprise Kimball Star Schema with strict separation between Demand Revenue and Recognized Revenue.",
+  "tables": [
+    {
+      "name": "fact_sales",
+      "type": "Fact Table",
+      "grain": "Atomic Order Line Item (order_item_id)",
+      "row_count": 6379,
+      "columns": [
+        "sales_key",
+        "order_item_id",
+        "order_id",
+        "date_key",
+        "customer_key",
+        "product_key",
+        "location_key",
+        "payment_key",
+        "order_status",
+        "quantity",
+        "unit_price",
+        "discount_percent",
+        "gross_revenue",
+        "discount_amount",
+        "net_revenue",
+        "unit_cost",
+        "total_cost",
+        "profit",
+        "profit_margin_pct",
+        "shipping_cost",
+        "is_delivered",
+        "is_shipped",
+        "is_processing",
+        "is_returned",
+        "is_cancelled",
+        "recognized_revenue",
+        "recognized_profit",
+        "in_transit_revenue",
+        "pipeline_revenue",
+        "returned_revenue_loss",
+        "cancelled_revenue_loss"
+      ]
+    },
+    {
+      "name": "dim_date",
+      "type": "Dimension",
+      "grain": "Calendar Day",
+      "row_count": 1096
+    },
+    {
+      "name": "dim_customer",
+      "type": "Dimension",
+      "grain": "Customer Account",
+      "row_count": 1000
+    },
+    {
+      "name": "dim_product",
+      "type": "Dimension",
+      "grain": "Product SKU",
+      "row_count": 30
+    },
+    {
+      "name": "dim_location",
+      "type": "Dimension",
+      "grain": "Metro Postal Area",
+      "row_count": 15
+    },
+    {
+      "name": "dim_payment",
+      "type": "Dimension",
+      "grain": "Payment Channel",
+      "row_count": 5
+    }
+  ],
+  "relationships": [
+    {
+      "from": "fact_sales.date_key",
+      "to": "dim_date.date_key",
+      "cardinality": "Many-to-One",
+      "cross_filter": "Single"
+    },
+    {
+      "from": "fact_sales.customer_key",
+      "to": "dim_customer.customer_key",
+      "cardinality": "Many-to-One",
+      "cross_filter": "Single"
+    },
+    {
+      "from": "fact_sales.product_key",
+      "to": "dim_product.product_key",
+      "cardinality": "Many-to-One",
+      "cross_filter": "Single"
+    },
+    {
+      "from": "fact_sales.location_key",
+      "to": "dim_location.location_key",
+      "cardinality": "Many-to-One",
+      "cross_filter": "Single"
+    },
+    {
+      "from": "fact_sales.payment_key",
+      "to": "dim_payment.payment_key",
+      "cardinality": "Many-to-One",
+      "cross_filter": "Single"
+    }
+  ],
+  "core_measures": [
+    {
+      "name": "Gross Demand Revenue",
+      "category": "Demand",
+      "total": 1020403.59,
+      "format": "Currency"
+    },
+    {
+      "name": "Net Demand Revenue",
+      "category": "Demand",
+      "total": 978097.82,
+      "format": "Currency"
+    },
+    {
+      "name": "Recognized Revenue",
+      "category": "Financial",
+      "total": 405484.47,
+      "format": "Currency"
+    },
+    {
+      "name": "Recognized Profit",
+      "category": "Financial",
+      "total": 231207.47,
+      "format": "Currency"
+    },
+    {
+      "name": "Recognized Profit Margin",
+      "category": "Financial",
+      "total": 0.5702,
+      "format": "Percentage"
+    },
+    {
+      "name": "In-Transit Revenue",
+      "category": "Operational",
+      "total": 138599.59,
+      "format": "Currency"
+    },
+    {
+      "name": "Pipeline Revenue",
+      "category": "Operational",
+      "total": 146949.52,
+      "format": "Currency"
+    },
+    {
+      "name": "Returned Revenue Loss",
+      "category": "Operational",
+      "total": 128944.83,
+      "format": "Currency"
+    },
+    {
+      "name": "Cancelled Revenue Loss",
+      "category": "Operational",
+      "total": 158119.41,
+      "format": "Currency"
+    },
+    {
+      "name": "Fulfillment Realization Rate",
+      "category": "Conversion",
+      "total": 0.4146,
+      "format": "Percentage"
+    }
+  ]
+}

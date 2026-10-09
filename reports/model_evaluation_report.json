@@ -1,0 +1,118 @@
+{
+  "model_type": "K-Means Clustering",
+  "feature_set": [
+    "recency_days",
+    "frequency",
+    "monetary"
+  ],
+  "preprocessing": "log1p variance stabilization + StandardScaler standardization",
+  "random_state": 42,
+  "selected_k": 4,
+  "evaluation_metrics": [
+    {
+      "k": 2,
+      "inertia": 1219.8,
+      "silhouette_score": 0.6103,
+      "calinski_harabasz_score": 1456.5,
+      "davies_bouldin_score": 0.4143
+    },
+    {
+      "k": 3,
+      "inertia": 658.43,
+      "silhouette_score": 0.511,
+      "calinski_harabasz_score": 1772.8,
+      "davies_bouldin_score": 0.7585
+    },
+    {
+      "k": 4,
+      "inertia": 451.48,
+      "silhouette_score": 0.4873,
+      "calinski_harabasz_score": 1874.08,
+      "davies_bouldin_score": 0.7831
+    },
+    {
+      "k": 5,
+      "inertia": 371.0,
+      "silhouette_score": 0.4594,
+      "calinski_harabasz_score": 1762.99,
+      "davies_bouldin_score": 0.8666
+    },
+    {
+      "k": 6,
+      "inertia": 306.44,
+      "silhouette_score": 0.4733,
+      "calinski_harabasz_score": 1747.54,
+      "davies_bouldin_score": 0.8294
+    }
+  ],
+  "optimal_selection_rationale": "k=4 achieves peak Calinski-Harabasz score (1874.08) and robust silhouette score (0.4873), marking the optimal elbow inflection point and yielding four actionable commercial cohorts: Champions, Recent Active Shoppers, At-Risk / Lapsed Buyers, and Unconverted / Inactive.",
+  "segment_summary": [
+    {
+      "cluster_id": 0,
+      "segment_name": "Champions",
+      "customer_count": 296,
+      "customer_pct": 29.6,
+      "recency_mean_days": 247.8,
+      "recency_median_days": 208.5,
+      "frequency_mean": 2.82,
+      "frequency_median": 3,
+      "monetary_mean": 753.56,
+      "monetary_median": 650.24,
+      "total_recognized_revenue": 223053.37,
+      "revenue_contribution_pct": 55.01,
+      "avg_order_value_mean": 276.33,
+      "profit_contribution_total": 127179.87
+    },
+    {
+      "cluster_id": 1,
+      "segment_name": "Recent Active Shoppers",
+      "customer_count": 132,
+      "customer_pct": 13.2,
+      "recency_mean_days": 40.0,
+      "recency_median_days": 40.5,
+      "frequency_mean": 2.42,
+      "frequency_median": 2,
+      "monetary_mean": 603.53,
+      "monetary_median": 570.12,
+      "total_recognized_revenue": 79665.33,
+      "revenue_contribution_pct": 19.65,
+      "avg_order_value_mean": 248.24,
+      "profit_contribution_total": 45351.83
+    },
+    {
+      "cluster_id": 2,
+      "segment_name": "At-Risk / Lapsed Buyers",
+      "customer_count": 358,
+      "customer_pct": 35.8,
+      "recency_mean_days": 572.7,
+      "recency_median_days": 570.0,
+      "frequency_mean": 1.23,
+      "frequency_median": 1,
+      "monetary_mean": 287.06,
+      "monetary_median": 201.97,
+      "total_recognized_revenue": 102765.77,
+      "revenue_contribution_pct": 25.34,
+      "avg_order_value_mean": 240.23,
+      "profit_contribution_total": 58675.77
+    },
+    {
+      "cluster_id": 3,
+      "segment_name": "Unconverted / Inactive",
+      "customer_count": 214,
+      "customer_pct": 21.4,
+      "recency_mean_days": 915.4,
+      "recency_median_days": 894.0,
+      "frequency_mean": 0.0,
+      "frequency_median": 0,
+      "monetary_mean": 0.0,
+      "monetary_median": 0.0,
+      "total_recognized_revenue": 0.0,
+      "revenue_contribution_pct": 0.0,
+      "avg_order_value_mean": 0.0,
+      "profit_contribution_total": 0.0
+    }
+  ],
+  "customer_total": 1000,
+  "total_recognized_revenue": 405484.47,
+  "generated_at": "2026-10-09T16:21:37.855954+00:00"
+}
