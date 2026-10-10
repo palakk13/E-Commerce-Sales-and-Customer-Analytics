@@ -1,0 +1,202 @@
+/* ==============================================================================
+   E-COMMERCE SALES AND CUSTOMER ANALYTICS PLATFORM
+   POWER BI DAX MEASURES LIBRARY (PHASE 7 SEMANTIC MODEL)
+   
+   Architecture: Kimball Star Schema
+   Fact Table:   fact_sales (Grain: 1 Atomic Order Line Item)
+   Dimensions:   dim_date, dim_customer, dim_product, dim_location, dim_payment
+   Accounting:   FOB Destination Revenue Recognition (IFRS 15 / US GAAP)
+============================================================================== */
+
+// ==============================================================================
+// 1. DEMAND REVENUE MEASURES (PLACED CUSTOMER DEMAND ACROSS ALL STATUSES)
+// ==============================================================================
+
+// Gross Demand Revenue: Total placed order volume before discount deductions
+[Gross Demand Revenue] = 
+SUM(fact_sales[gross_revenue])
+/* Alternate formula from line-item fields:
+   SUMX(fact_sales, fact_sales[quantity] * fact_sales[unit_price])
+   Format String: $#,##0.00
+   Display Folder: 01. Demand Measures
+   Reconciled Total: $1,020,403.59
+*/
+
+// Total Promotional Discounts: Deductions granted at checkout
+[Total Discounts] = 
+SUM(fact_sales[discount_amount])
+/* Format String: $#,##0.00
+   Display Folder: 01. Demand Measures
+   Reconciled Total: $42,305.77
+*/
+
+// Net Demand Revenue: Total net invoiced demand placed by customers across all 5 order statuses
+[Net Demand Revenue] = 
+SUM(fact_sales[net_revenue])
+/* Mathematically equal to: [Gross Demand Revenue] - [Total Discounts]
+   Format String: $#,##0.00
+   Display Folder: 01. Demand Measures
+   Reconciled Total: $978,097.82
+*/
+
+// Total Ordered Units: Cumulative volume of items ordered
+[Total Ordered Units] = 
+SUM(fact_sales[quantity])
+/* Format String: #,##0
+   Display Folder: 01. Demand Measures
+   Reconciled Total: 16,041 units
+*/
+
+// Total Distinct Orders: Count of distinct order transaction headers
+[Total Distinct Orders] = 
+DISTINCTCOUNT(fact_sales[order_id])
+/* Format String: #,##0
+   Display Folder: 01. Demand Measures
+   Reconciled Total: 3,819 distinct orders
+*/
+
+
+// ==============================================================================
+// 2. REVENUE RECOGNITION MEASURES (REALIZED FINANCIALS - FOB DESTINATION)
+// ==============================================================================
+
+// Recognized Revenue: Net revenue strictly recognized upon confirmed customer delivery
+[Recognized Revenue] = 
+CALCULATE(
+    SUM(fact_sales[net_revenue]),
+    fact_sales[order_status] = "Delivered"
+)
+/* Alternate native fact column: SUM(fact_sales[recognized_revenue])
+   Format String: $#,##0.00
+   Display Folder: 02. Realized Financials
+   Reconciled Total: $405,484.47
+*/
+
+// Recognized COGS: Direct catalog product acquisition cost incurred on delivered units
+[Recognized COGS] = 
+CALCULATE(
+    SUM(fact_sales[total_cost]),
+    fact_sales[order_status] = "Delivered"
+)
+/* Format String: $#,##0.00
+   Display Folder: 02. Realized Financials
+   Reconciled Total: $174,277.00
+*/
+
+// Recognized Profit: Realized operating profit from delivered transactions
+[Recognized Profit] = 
+[Recognized Revenue] - [Recognized COGS]
+/* Alternate native fact column: SUM(fact_sales[recognized_profit])
+   Format String: $#,##0.00
+   Display Folder: 02. Realized Financials
+   Reconciled Total: $231,207.47
+*/
+
+// Recognized Profit Margin (%): Realized profit as a percentage of recognized revenue
+[Recognized Profit Margin] = 
+DIVIDE([Recognized Profit], [Recognized Revenue], 0)
+/* Format String: 0.00%
+   Display Folder: 02. Realized Financials
+   Reconciled Metric: 57.02%
+*/
+
+// Realized Units Delivered: Volume of physical units delivered
+[Realized Units Delivered] = 
+CALCULATE(
+    SUM(fact_sales[quantity]),
+    fact_sales[order_status] = "Delivered"
+)
+/* Format String: #,##0
+   Display Folder: 02. Realized Financials
+   Reconciled Total: 6,654 units
+*/
+
+
+// ==============================================================================
+// 3. FULFILLMENT ATTRITION & OPERATIONAL STATUS PIPELINE MEASURES
+// ==============================================================================
+
+// In-Transit Revenue: In-transit courier shipments (control has not yet transferred)
+[In-Transit Revenue] = 
+CALCULATE(
+    SUM(fact_sales[net_revenue]),
+    fact_sales[order_status] = "Shipped"
+)
+/* Format String: $#,##0.00
+   Display Folder: 03. Operational Pipeline
+   Reconciled Total: $138,599.59 (14.17% of Net Demand)
+*/
+
+// Pipeline Revenue: Warehouse queue awaiting picking, packing, or dispatch
+[Pipeline Revenue] = 
+CALCULATE(
+    SUM(fact_sales[net_revenue]),
+    fact_sales[order_status] = "Processing"
+)
+/* Format String: $#,##0.00
+   Display Folder: 03. Operational Pipeline
+   Reconciled Total: $146,949.52 (15.02% of Net Demand)
+*/
+
+// Cancelled Revenue Loss: Pre-dispatch customer cancellations
+[Cancelled Revenue Loss] = 
+CALCULATE(
+    SUM(fact_sales[net_revenue]),
+    fact_sales[order_status] = "Cancelled"
+)
+/* Format String: $#,##0.00
+   Display Folder: 03. Operational Pipeline
+   Reconciled Total: $158,119.41 (16.17% of Net Demand)
+*/
+
+// Returned Revenue Loss: Post-delivery returns resulting in customer refunds
+[Returned Revenue Loss] = 
+CALCULATE(
+    SUM(fact_sales[net_revenue]),
+    fact_sales[order_status] = "Returned"
+)
+/* Format String: $#,##0.00
+   Display Folder: 03. Operational Pipeline
+   Reconciled Total: $128,944.83 (13.18% of Net Demand)
+*/
+
+// Total Demand Leakage: Combined lost demand from cancellations and returns
+[Total Demand Leakage] = 
+[Cancelled Revenue Loss] + [Returned Revenue Loss]
+/* Format String: $#,##0.00
+   Display Folder: 03. Operational Pipeline
+   Reconciled Total: $287,064.24 (29.35% of Net Demand)
+*/
+
+
+// ==============================================================================
+// 4. RATIOS & CONVERSION KPI MEASURES
+// ==============================================================================
+
+// Fulfillment Realization Rate: Proportion of placed customer demand converted into realized revenue
+[Fulfillment Realization Rate] = 
+DIVIDE([Recognized Revenue], [Net Demand Revenue], 0)
+/* Format String: 0.00%
+   Display Folder: 04. Conversion & Efficiency
+   Reconciled Metric: 41.46%
+*/
+
+// Demand Attrition Rate: Proportion of demand lost to cancellations and returns
+[Demand Attrition Rate] = 
+DIVIDE([Total Demand Leakage], [Net Demand Revenue], 0)
+/* Format String: 0.00%
+   Display Folder: 04. Conversion & Efficiency
+   Reconciled Metric: 29.35%
+*/
+
+// Realized Average Order Value (AOV): Average recognized revenue per delivered order
+[Realized AOV] = 
+DIVIDE(
+    [Recognized Revenue],
+    CALCULATE(DISTINCTCOUNT(fact_sales[order_id]), fact_sales[order_status] = "Delivered"),
+    0
+)
+/* Format String: $#,##0.00
+   Display Folder: 04. Conversion & Efficiency
+   Reconciled Metric: $254.38
+*/

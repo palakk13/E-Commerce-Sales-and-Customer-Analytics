@@ -1,0 +1,74 @@
+# ==============================================================================
+# Pipeline Configuration Specification
+# ==============================================================================
+
+pipeline:
+  name: "ecommerce_data_platform"
+  version: "1.0.0"
+  environment: "development"
+
+paths:
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  rejected_data_dir: "data/rejected"
+  logs_dir: "logs"
+  sql_dir: "sql"
+
+files:
+  customers_file: "customers.csv"
+  products_file: "products.csv"
+  orders_file: "orders.csv"
+  order_items_file: "order_items.csv"
+  quarantine_file: "quarantine_records.csv"
+
+database:
+  dialect: "mysql+pymysql"
+  host: "localhost"
+  port: 3306
+  database: "ecommerce_dwh"
+  user: "ecommerce_user"
+  pool_size: 5
+  max_overflow: 10
+  pool_recycle: 3600
+
+validation:
+  mandatory_customer_fields:
+    - "customer_id"
+    - "customer_name"
+    - "signup_date"
+  mandatory_product_fields:
+    - "product_id"
+    - "product_name"
+    - "category"
+    - "unit_cost"
+    - "list_price"
+  mandatory_order_fields:
+    - "order_id"
+    - "customer_id"
+    - "order_date"
+    - "order_status"
+  mandatory_item_fields:
+    - "order_item_id"
+    - "order_id"
+    - "product_id"
+    - "quantity"
+    - "unit_price"
+  thresholds:
+    min_quantity: 1
+    max_quantity: 500
+    min_price: 0.01
+    max_discount_pct: 100.0
+
+spark:
+  app_name: "EcommerceDataPlatform"
+  master: "local[*]"
+  driver_memory: "2g"
+  shuffle_partitions: "4"
+
+ml:
+  rfm:
+    snapshot_date: "2026-10-08" # or dynamic max(order_date)
+    k_range_min: 2
+    k_range_max: 6
+    random_state: 42
+    default_clusters: 4
